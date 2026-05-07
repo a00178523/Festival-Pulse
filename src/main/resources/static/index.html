@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Festival Pulse</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="grain-overlay"></div>
+    
+    <header class="header">
+        <div class="header-content">
+            <h1 class="logo">
+                <span class="logo-pulse">⚡</span>
+                <span class="logo-text">Festival Pulse</span>
+            </h1>
+            <div class="header-status">
+                <div class="live-indicator"></div>
+                <span>LIVE</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Festival Selector -->
+        <section class="festival-selector">
+            <div class="festival-header">
+                <div class="festival-info">
+                    <h2 class="festival-name" id="currentFestivalName">Select a Festival</h2>
+                    <p class="festival-dates" id="currentFestivalDates"></p>
+                </div>
+                <div class="festival-actions">
+                    <select id="festivalSelect" class="festival-dropdown">
+                        <option value="">Choose festival...</option>
+                    </select>
+                    <button class="btn btn-secondary" onclick="showCreateFestivalModal()">+ New Festival</button>
+                </div>
+            </div>
+        </section>
+
+        <div id="festivalContent" class="festival-content hidden">
+        <!-- Dashboard Summary -->
+        <section class="dashboard-hero">
+            <div class="stat-card stat-areas">
+                <div class="stat-icon">🎪</div>
+                <div class="stat-content">
+                    <div class="stat-value" id="totalAreas">0</div>
+                    <div class="stat-label">Active Areas</div>
+                </div>
+            </div>
+            <div class="stat-card stat-alerts">
+                <div class="stat-icon">🚨</div>
+                <div class="stat-content">
+                    <div class="stat-value" id="activeAlerts">0</div>
+                    <div class="stat-label">Active Alerts</div>
+                </div>
+            </div>
+            <div class="stat-card stat-reports">
+                <div class="stat-icon">📊</div>
+                <div class="stat-content">
+                    <div class="stat-value" id="recentReports">0</div>
+                    <div class="stat-label">Recent Reports</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Active Alerts -->
+        <section class="section alerts-section">
+            <div class="section-header">
+                <h2 class="section-title">🚨 Active Alerts</h2>
+                <div class="pulse-dot"></div>
+            </div>
+            <div id="alertsList" class="alerts-list"></div>
+        </section>
+
+        <!-- Action Panels -->
+        <div class="action-grid">
+            <!-- Create Area -->
+            <section class="section action-panel">
+                <h2 class="section-title">🎪 Create Festival Area</h2>
+                <form id="createAreaForm" class="form">
+                    <div class="form-group">
+                        <label for="areaName">Area Name</label>
+                        <input type="text" id="areaName" required placeholder="Main Stage">
+                    </div>
+                    <div class="form-group">
+                        <label for="areaDescription">Description</label>
+                        <input type="text" id="areaDescription" placeholder="Primary performance venue">
+                    </div>
+                    <div class="form-group">
+                        <label for="areaType">Area Type</label>
+                        <select id="areaType">
+                            <option value="STAGE">Stage</option>
+                            <option value="FOOD">Food & Drink</option>
+                            <option value="AMENITY">Amenity</option>
+                            <option value="ENTRANCE">Entrance</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Area</button>
+                </form>
+            </section>
+
+            <!-- Submit Report -->
+            <section class="section action-panel">
+                <h2 class="section-title">📊 Submit Crowd Report</h2>
+                <form id="submitReportForm" class="form">
+                    <div class="form-group">
+                        <label for="reportArea">Festival Area</label>
+                        <select id="reportArea" required>
+                            <option value="">Select an area...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Crowd Level</label>
+                        <div class="crowd-level-selector">
+                            <label class="crowd-option crowd-low">
+                                <input type="radio" name="crowdLevel" value="LOW" required>
+                                <span class="crowd-label">
+                                    <span class="crowd-emoji">🟢</span>
+                                    <span>LOW</span>
+                                </span>
+                            </label>
+                            <label class="crowd-option crowd-medium">
+                                <input type="radio" name="crowdLevel" value="MEDIUM" required>
+                                <span class="crowd-label">
+                                    <span class="crowd-emoji">🟡</span>
+                                    <span>MEDIUM</span>
+                                </span>
+                            </label>
+                            <label class="crowd-option crowd-full">
+                                <input type="radio" name="crowdLevel" value="FULL" required>
+                                <span class="crowd-label">
+                                    <span class="crowd-emoji">🔴</span>
+                                    <span>FULL</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reportNote">Note</label>
+                        <textarea id="reportNote" rows="2" placeholder="Additional details..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Report</button>
+                </form>
+            </section>
+        </div>
+
+        <!-- Festival Areas -->
+        <section class="section">
+            <h2 class="section-title">🎪 Festival Areas</h2>
+            <div id="areasList" class="areas-grid"></div>
+        </section>
+
+        <!-- Recent Reports -->
+        <section class="section">
+            <h2 class="section-title">📊 Recent Reports</h2>
+            <div id="reportsList" class="reports-list"></div>
+        </section>
+        </div>
+    </main>
+
+    <!-- Create Festival Modal -->
+    <div id="createFestivalModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎉 Create New Festival</h2>
+                <button class="modal-close" onclick="hideCreateFestivalModal()">&times;</button>
+            </div>
+            <form id="createFestivalForm" class="form">
+                <div class="form-group">
+                    <label for="festivalName">Festival Name</label>
+                    <input type="text" id="festivalName" required placeholder="Summer Music Fest 2024">
+                </div>
+                <div class="form-group">
+                    <label for="festivalDescription">Description</label>
+                    <textarea id="festivalDescription" rows="3" placeholder="A celebration of music, food, and culture..."></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="festivalStartDate">Start Date</label>
+                        <input type="date" id="festivalStartDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="festivalEndDate">End Date</label>
+                        <input type="date" id="festivalEndDate">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Create Festival</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
