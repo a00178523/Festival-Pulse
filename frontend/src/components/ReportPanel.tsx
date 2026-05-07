@@ -15,7 +15,7 @@ const LEVEL_STYLES: Record<string, { bg: string; color: string; label: string }>
 };
 
 export const ReportPanel = ({ festivalId }: ReportPanelProps) => {
-  const { areas, setAlerts } = useStore();
+  const { areas, setAlerts, setSelectedReport } = useStore();
 
   const [areaId, setAreaId]         = useState('');
   const [level, setLevel]           = useState<'LOW' | 'MEDIUM' | 'FULL' | ''>('');
@@ -175,7 +175,7 @@ export const ReportPanel = ({ festivalId }: ReportPanelProps) => {
             {reports.map(r => {
               const style = LEVEL_STYLES[r.crowdLevel];
               return (
-                <div key={r.id} className="report-item">
+                <div key={r.id} className="report-item" style={{ cursor: 'pointer' }} onClick={() => setSelectedReport(r)}>
                   <div className="report-item-left">
                     <span
                       className="report-level-badge"

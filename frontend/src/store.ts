@@ -1,27 +1,21 @@
 import { create } from 'zustand';
-import type { Festival, FestivalArea, CrowdAlert, ViewMode } from './types';
+import type { Festival, FestivalArea, CrowdAlert, CrowdReport, ViewMode } from './types';
 
 interface AppState {
-  // Festival state
   festivals: Festival[];
   currentFestival: Festival | null;
-  
-  // Area state
   areas: FestivalArea[];
   selectedArea: FestivalArea | null;
-  
-  // Alert state
+  selectedReport: CrowdReport | null;
   alerts: CrowdAlert[];
-  
-  // UI state
   viewMode: ViewMode;
   isDrawing: boolean;
   
-  // Actions
   setFestivals: (festivals: Festival[]) => void;
   setCurrentFestival: (festival: Festival | null) => void;
   setAreas: (areas: FestivalArea[]) => void;
   setSelectedArea: (area: FestivalArea | null) => void;
+  setSelectedReport: (report: CrowdReport | null) => void;
   setAlerts: (alerts: CrowdAlert[]) => void;
   setViewMode: (mode: ViewMode) => void;
   setIsDrawing: (drawing: boolean) => void;
@@ -35,6 +29,7 @@ export const useStore = create<AppState>((set) => ({
   currentFestival: null,
   areas: [],
   selectedArea: null,
+  selectedReport: null,
   alerts: [],
   viewMode: 'monitor',
   isDrawing: false,
@@ -43,6 +38,7 @@ export const useStore = create<AppState>((set) => ({
   setCurrentFestival: (festival) => set({ currentFestival: festival }),
   setAreas: (areas) => set({ areas }),
   setSelectedArea: (area) => set({ selectedArea: area }),
+  setSelectedReport: (report) => set({ selectedReport: report }),
   setAlerts: (alerts) => set({ alerts }),
   setViewMode: (mode) => set({ viewMode: mode }),
   setIsDrawing: (drawing) => set({ isDrawing: drawing }),

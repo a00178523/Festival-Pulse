@@ -660,3 +660,52 @@ body {
   align-items: center;
   gap: 4px;
 }
+
+/* =============================================
+   REPORT DETAIL MODAL
+   ============================================= */
+
+.report-detail-modal {
+  max-width: 520px;
+}
+
+.report-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.report-detail-full {
+  grid-column: 1 / -1;
+}
+
+.report-detail-item {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.report-detail-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.report-detail-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.report-item:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.07);
+  transition: all 0.2s ease;
+}

@@ -3,6 +3,7 @@ import { MapBuilder } from './components/MapBuilder';
 import { MapViewer } from './components/MapViewer';
 import { AlertsPanel } from './components/AlertsPanel';
 import { ReportPanel } from './components/ReportPanel';
+import { ReportDetailModal } from './components/ReportDetailModal';
 import { Tent, Bell, PlusCircle, Radio, Eye, PenLine } from 'lucide-react';
 import { useStore } from './store';
 import { api } from './api';
@@ -266,6 +267,9 @@ function App() {
           </div>
         )}
       </main>
+
+      {/* Report Detail Modal */}
+      <ReportDetailModal />
 
       {/* Create Festival Modal */}
       {showCreateFestival && (
