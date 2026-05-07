@@ -2,6 +2,7 @@ package com.ericsson.festivalpulse.service;
 
 import com.ericsson.festivalpulse.model.CrowdLevel;
 import com.ericsson.festivalpulse.model.CrowdReport;
+import com.ericsson.festivalpulse.model.Festival;
 import com.ericsson.festivalpulse.model.FestivalArea;
 import com.ericsson.festivalpulse.repository.CrowdReportRepository;
 import com.ericsson.festivalpulse.repository.FestivalAreaRepository;
@@ -20,10 +21,14 @@ public class CrowdReportService {
     private final CrowdReportRepository crowdReportRepository;
     private final FestivalAreaRepository festivalAreaRepository;
     private final CrowdAlertService crowdAlertService;
+    private final FestivalService festivalService;
 
-    public CrowdReport submitReport(Long areaId, CrowdLevel crowdLevel, String note) {
+    public CrowdReport submitReport(Long festivalId, Long areaId, CrowdLevel crowdLevel, String note) {
+        festivalService.getFestivalById(festivalId);
+
         FestivalArea area = festivalAreaRepository.findById(areaId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Area not found"));
+                .filter(a -> a.getFestival().getId().equals(festivalId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Area not found in this festival"));
 
         CrowdReport report = new CrowdReport(null, area, crowdLevel, note, LocalDateTime.now());
         CrowdReport saved = crowdReportRepository.save(report);
@@ -35,7 +40,8 @@ public class CrowdReportService {
         return saved;
     }
 
-    public List<CrowdReport> getRecentReports() {
-        return crowdReportRepository.findTop20ByOrderBySubmittedAtDesc();
+    public List<CrowdReport> getRecentReports(Long festivalId) {
+        Festival festival = festivalService.getFestivalById(festivalId);
+        return crowdReportRepository.findTop20ByAreaFestivalOrderBySubmittedAtDesc(festival);
     }
 }

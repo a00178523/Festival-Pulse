@@ -1,28 +1,30 @@
 package com.ericsson.festivalpulse.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FestivalArea {
-    
+public class Festival {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "festival_id")
-    private Festival festival;
-
+    @NotBlank(message = "Name is required")
     @Column(nullable = false)
     private String name;
-    
+
     private String description;
-    
-    private String areaType;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 }

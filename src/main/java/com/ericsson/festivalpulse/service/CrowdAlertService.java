@@ -2,6 +2,7 @@ package com.ericsson.festivalpulse.service;
 
 import com.ericsson.festivalpulse.model.AlertStatus;
 import com.ericsson.festivalpulse.model.CrowdAlert;
+import com.ericsson.festivalpulse.model.Festival;
 import com.ericsson.festivalpulse.model.FestivalArea;
 import com.ericsson.festivalpulse.repository.CrowdAlertRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +27,16 @@ public class CrowdAlertService {
         }
     }
 
-    public List<CrowdAlert> getActiveAlerts() {
-        return crowdAlertRepository.findByStatus(AlertStatus.ACTIVE);
+    public List<CrowdAlert> getActiveAlerts(Festival festival) {
+        return crowdAlertRepository.findByAreaFestivalAndStatus(festival, AlertStatus.ACTIVE);
     }
 
-    public CrowdAlert resolveAlert(Long id) {
-        CrowdAlert alert = crowdAlertRepository.findById(id)
+    public CrowdAlert resolveAlert(Long festivalId, Long alertId) {
+        CrowdAlert alert = crowdAlertRepository.findById(alertId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Alert not found"));
+        if (!alert.getArea().getFestival().getId().equals(festivalId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Alert not found in this festival");
+        }
         alert.setStatus(AlertStatus.RESOLVED);
         return crowdAlertRepository.save(alert);
     }

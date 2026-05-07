@@ -1,13 +1,9 @@
 package com.ericsson.festivalpulse.repository;
 
 import com.ericsson.festivalpulse.model.Festival;
-import com.ericsson.festivalpulse.model.FestivalArea;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface FestivalAreaRepository extends JpaRepository<FestivalArea, Long> {
-    List<FestivalArea> findByFestival(Festival festival);
+public interface FestivalRepository extends JpaRepository<Festival, Long> {
 }
