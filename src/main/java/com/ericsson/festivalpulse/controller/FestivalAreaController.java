@@ -21,7 +21,7 @@ public class FestivalAreaController {
 
     @PostMapping
     public ResponseEntity<FestivalArea> createArea(@PathVariable Long festivalId, @Valid @RequestBody AreaRequest request) {
-        FestivalArea area = new FestivalArea(null, null, request.getName(), request.getDescription(), request.getAreaType());
+        FestivalArea area = new FestivalArea(null, null, request.getName(), request.getDescription(), request.getAreaType(), request.getCoordinates(), request.getBaseColor());
         return ResponseEntity.status(HttpStatus.CREATED).body(festivalAreaService.createArea(festivalId, area));
     }
 
@@ -36,5 +36,7 @@ public class FestivalAreaController {
         private String name;
         private String description;
         private String areaType;
+        private String coordinates;
+        private String baseColor;
     }
 }

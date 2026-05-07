@@ -25,4 +25,9 @@ public class FestivalArea {
     private String description;
     
     private String areaType;
+    
+    @Column(length = 10000)
+    private String coordinates; // JSON array of {x, y} points
+    
+    private String baseColor; // Hex color for area identity
 }
