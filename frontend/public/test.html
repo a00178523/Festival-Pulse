@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Page</title>
+    <style>
+        body {
+            background: #0a0014;
+            color: white;
+            font-family: sans-serif;
+            padding: 2rem;
+        }
+        h1 { color: #ff006e; }
+    </style>
+</head>
+<body>
+    <h1>Festival Pulse Test Page</h1>
+    <p>If you can see this, the Vite server is working!</p>
+    <p>Check the main app at: <a href="/" style="color: #00f5ff;">http://localhost:3000</a></p>
+    <script>
+        console.log('Test page loaded successfully');
+        fetch('/api/festivals')
+            .then(r => r.json())
+            .then(data => {
+                console.log('API Response:', data);
+                document.body.innerHTML += '<p>API is working! Festivals: ' + JSON.stringify(data) + '</p>';
+            })
+            .catch(err => {
+                console.error('API Error:', err);
+                document.body.innerHTML += '<p style="color: red;">API Error: ' + err.message + '</p>';
+            });
+    </script>
+</body>
+</html>
