@@ -38,19 +38,32 @@ export const MapViewer = () => {
 
   const getAreaColor = (area: FestivalArea) => {
     const hasAlert = alerts.some(alert => alert.area.id === area.id);
-    if (hasAlert) return flashOn ? CROWD_COLORS.ALERT : 'rgba(255,255,255,0.15)';
-    if (area.crowdLevel === 'FULL')   return CROWD_COLORS.FULL;
-    if (area.crowdLevel === 'MEDIUM') return CROWD_COLORS.MEDIUM;
-    if (area.crowdLevel === 'LOW')    return CROWD_COLORS.LOW;
-    return 'rgba(255,255,255,0.25)'; // no report yet — neutral
+
+    // Get the base color for the area's crowd level
+    const getBaseColor = () => {
+      if (area.crowdLevel === 'FULL')   return CROWD_COLORS.FULL;
+      if (area.crowdLevel === 'MEDIUM') return CROWD_COLORS.MEDIUM;
+      if (area.crowdLevel === 'LOW')    return CROWD_COLORS.LOW;
+      return 'rgba(255,255,255,0.25)'; // no report yet — neutral
+    };
+
+    // Flash between the base color and the alert color
+    if (hasAlert) return flashOn ? CROWD_COLORS.ALERT : getBaseColor();
+    return getBaseColor();
   };
 
   const getAreaStroke = (area: FestivalArea, hasAlert: boolean) => {
-    if (hasAlert) return flashOn ? '#FF006E' : 'rgba(255,255,255,0.3)';
-    if (area.crowdLevel === 'FULL')   return 'rgba(255,84,0,0.8)';
-    if (area.crowdLevel === 'MEDIUM') return 'rgba(255,190,11,0.8)';
-    if (area.crowdLevel === 'LOW')    return 'rgba(6,255,165,0.8)';
-    return 'rgba(255,255,255,0.3)';
+    // Get the base stroke color for the area's crowd level
+    const getBaseStroke = () => {
+      if (area.crowdLevel === 'FULL')   return 'rgba(255,84,0,0.8)';
+      if (area.crowdLevel === 'MEDIUM') return 'rgba(255,190,11,0.8)';
+      if (area.crowdLevel === 'LOW')    return 'rgba(6,255,165,0.8)';
+      return 'rgba(255,255,255,0.3)';
+    };
+
+    // Flash between the base stroke and the alert stroke
+    if (hasAlert) return flashOn ? '#FF006E' : getBaseStroke();
+    return getBaseStroke();
   };
 
   return (
@@ -84,7 +97,7 @@ export const MapViewer = () => {
                   points={flattenPoints(area.coordinates)}
                   closed
                   fill={getAreaColor(area)}
-                  opacity={hasAlert ? (flashOn ? 0.92 : 0.2) : 0.88}
+                  opacity={hasAlert ? (flashOn ? 0.92 : 0.88) : 0.88}
                   stroke={getAreaStroke(area, hasAlert)}
                   strokeWidth={hasAlert ? 3 : 1.5}
                   onClick={() => handleAreaClick(area)}
