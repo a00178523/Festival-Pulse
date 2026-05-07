@@ -30,6 +30,10 @@ public class CrowdReportService {
                 .filter(a -> a.getFestival().getId().equals(festivalId))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Area not found in this festival"));
 
+        boolean hasActiveAlert = crowdAlertService.hasActiveAlert(area);
+        if (hasActiveAlert) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Area already has an active alert — resolve it before submitting a new report");
+        }
         CrowdReport report = new CrowdReport(null, area, crowdLevel, note, LocalDateTime.now());
         CrowdReport saved = crowdReportRepository.save(report);
 

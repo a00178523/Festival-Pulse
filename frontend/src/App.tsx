@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { MapBuilder } from './components/MapBuilder';
 import { MapViewer } from './components/MapViewer';
+import { AlertsPanel } from './components/AlertsPanel';
+import { ReportPanel } from './components/ReportPanel';
+import { Tent, Bell, PlusCircle, Radio, Eye, PenLine } from 'lucide-react';
 import { useStore } from './store';
 import { api } from './api';
 import type { FestivalArea } from './types';
@@ -56,16 +59,23 @@ function App() {
     if (!currentFestival) return;
     
     try {
-      const [areasData, alertsData] = await Promise.all([
+      const [areasData, alertsData, reportsData] = await Promise.all([
         api.getAreas(currentFestival.id),
         api.getAlerts(currentFestival.id),
+        api.getReports(currentFestival.id),
       ]);
       
-      // Parse coordinates from JSON string
-      const parsedAreas = areasData.map((area: any) => ({
-        ...area,
-        coordinates: area.coordinates ? JSON.parse(area.coordinates) : [],
-      }));
+      // Parse coordinates and attach latest crowd level from reports
+      const parsedAreas = areasData.map((area: any) => {
+        const latestReport = reportsData
+          .filter((r: any) => r.area.id === area.id)
+          .sort((a: any, b: any) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime())[0];
+        return {
+          ...area,
+          coordinates: area.coordinates ? JSON.parse(area.coordinates) : [],
+          crowdLevel: latestReport?.crowdLevel ?? undefined,
+        };
+      });
       
       setAreas(parsedAreas);
       setAlerts(alertsData);
@@ -124,6 +134,7 @@ function App() {
           </h1>
           <div className="header-status">
             <div className="live-indicator"></div>
+            <Radio size={16} />
             <span>LIVE</span>
           </div>
         </div>
@@ -159,7 +170,8 @@ function App() {
                 className="btn btn-secondary"
                 onClick={() => setShowCreateFestival(true)}
               >
-                + New Festival
+                <PlusCircle size={16} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }} />
+                New Festival
               </button>
             </div>
           </div>
@@ -173,13 +185,15 @@ function App() {
                 className={`mode-btn ${viewMode === 'monitor' ? 'active' : ''}`}
                 onClick={() => setViewMode('monitor')}
               >
-                👁️ Monitor Mode
+                <Eye size={18} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'middle' }} />
+                Monitor Mode
               </button>
               <button
                 className={`mode-btn ${viewMode === 'builder' ? 'active' : ''}`}
                 onClick={() => setViewMode('builder')}
               >
-                ✏️ Builder Mode
+                <PenLine size={18} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'middle' }} />
+                Builder Mode
               </button>
             </div>
 
@@ -195,20 +209,26 @@ function App() {
             {/* Stats */}
             <section className="dashboard-hero">
               <div className="stat-card">
-                <div className="stat-icon">🎪</div>
+                <div className="stat-icon"><Tent size={40} color="var(--neon-cyan)" /></div>
                 <div className="stat-content">
                   <div className="stat-value">{areas.length}</div>
                   <div className="stat-label">Areas</div>
                 </div>
               </div>
               <div className="stat-card">
-                <div className="stat-icon">🚨</div>
+                <div className="stat-icon"><Bell size={40} color="var(--neon-pink)" /></div>
                 <div className="stat-content">
                   <div className="stat-value">{alerts.length}</div>
                   <div className="stat-label">Active Alerts</div>
                 </div>
               </div>
             </section>
+
+            {/* Alerts Panel */}
+            <AlertsPanel festivalId={currentFestival.id} />
+
+            {/* Report Panel */}
+            <ReportPanel festivalId={currentFestival.id} />
           </>
         )}
 
@@ -221,7 +241,7 @@ function App() {
             border: '2px solid rgba(255, 255, 255, 0.1)',
             backdropFilter: 'blur(20px)',
           }}>
-            <div style={{ fontSize: '5rem', marginBottom: '1rem' }}>🎉</div>
+            <div style={{ marginBottom: '1rem' }}><Tent size={80} color="var(--neon-pink)" /></div>
             <h2 style={{ 
               fontFamily: 'Bebas Neue', 
               fontSize: '2.5rem',
@@ -240,7 +260,8 @@ function App() {
               onClick={() => setShowCreateFestival(true)}
               style={{ fontSize: '1.1rem', padding: '1.2rem 2.5rem' }}
             >
-              🎪 Create Your First Festival
+              <PlusCircle size={20} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'middle' }} />
+              Create Your First Festival
             </button>
           </div>
         )}
@@ -251,7 +272,7 @@ function App() {
         <div className="modal show">
           <div className="modal-content">
             <div className="modal-header">
-              <h2>🎉 Create New Festival</h2>
+              <h2>Create New Festival</h2>
               <button 
                 className="modal-close"
                 onClick={() => setShowCreateFestival(false)}

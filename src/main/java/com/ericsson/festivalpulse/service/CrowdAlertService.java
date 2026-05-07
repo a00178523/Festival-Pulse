@@ -19,6 +19,10 @@ public class CrowdAlertService {
 
     private final CrowdAlertRepository crowdAlertRepository;
 
+    public boolean hasActiveAlert(FestivalArea area) {
+        return crowdAlertRepository.findByAreaAndStatus(area, AlertStatus.ACTIVE).isPresent();
+    }
+
     public void createAlertIfNotExists(FestivalArea area) {
         boolean alreadyActive = crowdAlertRepository.findByAreaAndStatus(area, AlertStatus.ACTIVE).isPresent();
         if (!alreadyActive) {

@@ -56,3 +56,70 @@ INSERT INTO festival_area (festival_id, name, description, area_type, coordinate
 (4, 'Food Forest',        'Organic and artisan food village',                     'Food & Drink',   '[{"x":500,"y":380},{"x":650,"y":380},{"x":650,"y":490},{"x":500,"y":490}]', '#FFBE0B'),
 (4, 'First Aid Point',    'Medical and first aid station',                        'Medical',        '[{"x":700,"y":150},{"x":800,"y":150},{"x":800,"y":230},{"x":700,"y":230}]', '#FF5400'),
 (4, 'Campsite',           'Main campsite on the castle grounds',                  'Campsite',       '[{"x":150,"y":550},{"x":350,"y":550},{"x":350,"y":680},{"x":150,"y":680}]', '#00D9FF');
+
+-- =============================================
+-- CROWD REPORTS
+-- =============================================
+
+-- Electric Picnic
+INSERT INTO crowd_report (area_id, crowd_level, note, submitted_at) VALUES
+((SELECT id FROM festival_area WHERE festival_id = 1 AND name = 'Main Stage'),        'FULL',   'Packed out for the headline act, barriers at capacity',  DATEADD('MINUTE', -5,  CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 1 AND name = 'Food Village'),      'FULL',   'Huge queues at every stall, very slow moving',           DATEADD('MINUTE', -10, CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 1 AND name = 'Craft Beer Garden'), 'MEDIUM', 'Busy but manageable, bar staff coping well',             DATEADD('MINUTE', -15, CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 1 AND name = 'Electric Arena'),    'MEDIUM', 'Filling up ahead of the next act',                       DATEADD('MINUTE', -20, CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 1 AND name = 'Campsite A'),        'LOW',    'Quiet, most people are at the stages',                   DATEADD('MINUTE', -30, CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 1 AND name = 'First Aid Point'),   'LOW',    'Only a few people waiting, all minor issues',            DATEADD('MINUTE', -40, CURRENT_TIMESTAMP));
+
+-- Longitude
+INSERT INTO crowd_report (area_id, crowd_level, note, submitted_at) VALUES
+((SELECT id FROM festival_area WHERE festival_id = 2 AND name = 'Main Stage'),    'FULL',   'Sold out crowd, no more space near the front',       DATEADD('MINUTE', -8,  CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 2 AND name = 'Bar Village'),   'FULL',   'Extremely long queues, 20+ minute wait for drinks',  DATEADD('MINUTE', -12, CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 2 AND name = 'Dance Tent'),    'MEDIUM', 'Getting busy, warm inside',                          DATEADD('MINUTE', -25, CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 2 AND name = 'Food Court'),    'LOW',    'Quiet period between sets',                          DATEADD('MINUTE', -35, CURRENT_TIMESTAMP));
+
+-- Forbidden Fruit
+INSERT INTO crowd_report (area_id, crowd_level, note, submitted_at) VALUES
+((SELECT id FROM festival_area WHERE festival_id = 3 AND name = 'The Greenhouse'),     'FULL',   'Over capacity, people being turned away at door',  DATEADD('MINUTE', -6,  CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 3 AND name = 'Street Food Market'), 'MEDIUM', 'Steady flow of people, queues moving well',        DATEADD('MINUTE', -18, CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 3 AND name = 'Main Stage'),         'LOW',    'Early in the day, crowd building slowly',          DATEADD('MINUTE', -45, CURRENT_TIMESTAMP));
+
+-- Body & Soul
+INSERT INTO crowd_report (area_id, crowd_level, note, submitted_at) VALUES
+((SELECT id FROM festival_area WHERE festival_id = 4 AND name = 'Woodland Stage'), 'FULL',   'Beautiful setting, completely packed out',        DATEADD('MINUTE', -7,  CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 4 AND name = 'The Sanctuary'),  'MEDIUM', 'Busy yoga session underway',                      DATEADD('MINUTE', -22, CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 4 AND name = 'The Lakeside'),   'LOW',    'Relaxed atmosphere, plenty of space',             DATEADD('MINUTE', -50, CURRENT_TIMESTAMP));
+
+-- Additional reports to colour remaining areas on the map
+-- Electric Picnic
+INSERT INTO crowd_report (area_id, crowd_level, note, submitted_at) VALUES
+((SELECT id FROM festival_area WHERE festival_id = 1 AND name = 'Rankins Wood Stage'), 'MEDIUM', 'Good crowd for the early afternoon slot',         DATEADD('MINUTE', -18, CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 1 AND name = 'Trailer Park'),       'MEDIUM', 'Steady queue at the burger trucks',               DATEADD('MINUTE', -22, CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 1 AND name = 'Body & Mind'),        'LOW',    'Quiet, a few people doing yoga',                  DATEADD('MINUTE', -35, CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 1 AND name = 'Campsite B'),         'LOW',    'Very quiet, most campers are at the stages',      DATEADD('MINUTE', -60, CURRENT_TIMESTAMP));
+
+-- Longitude
+INSERT INTO crowd_report (area_id, crowd_level, note, submitted_at) VALUES
+((SELECT id FROM festival_area WHERE festival_id = 2 AND name = 'Second Stage'),   'MEDIUM', 'Building up nicely ahead of the next act',        DATEADD('MINUTE', -14, CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 2 AND name = 'Main Entrance'),  'LOW',    'Entry flowing well, no bottlenecks',              DATEADD('MINUTE', -40, CURRENT_TIMESTAMP));
+
+-- Forbidden Fruit
+INSERT INTO crowd_report (area_id, crowd_level, note, submitted_at) VALUES
+((SELECT id FROM festival_area WHERE festival_id = 3 AND name = 'The Courtyard Stage'), 'MEDIUM', 'Filling up, good atmosphere',                 DATEADD('MINUTE', -20, CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 3 AND name = 'Craft Bar'),           'LOW',    'Quiet between sets, staff restocking',        DATEADD('MINUTE', -55, CURRENT_TIMESTAMP));
+
+-- Body & Soul
+INSERT INTO crowd_report (area_id, crowd_level, note, submitted_at) VALUES
+((SELECT id FROM festival_area WHERE festival_id = 4 AND name = 'Castle Stage'),  'MEDIUM', 'Good crowd, building ahead of headline',          DATEADD('MINUTE', -16, CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 4 AND name = 'Food Forest'),   'LOW',    'Quiet, most people still at the stages',          DATEADD('MINUTE', -45, CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 4 AND name = 'Campsite'),      'LOW',    'Campsite calm, people setting up for the night',  DATEADD('MINUTE', -70, CURRENT_TIMESTAMP));
+
+-- =============================================
+-- CROWD ALERTS (ACTIVE - one per FULL area)
+-- =============================================
+INSERT INTO crowd_alert (area_id, message, status, created_at) VALUES
+((SELECT id FROM festival_area WHERE festival_id = 1 AND name = 'Main Stage'),      'Main Stage is FULL!',      'ACTIVE', DATEADD('MINUTE', -5,  CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 1 AND name = 'Food Village'),    'Food Village is FULL!',    'ACTIVE', DATEADD('MINUTE', -10, CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 2 AND name = 'Main Stage'),      'Main Stage is FULL!',      'ACTIVE', DATEADD('MINUTE', -8,  CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 2 AND name = 'Bar Village'),     'Bar Village is FULL!',     'ACTIVE', DATEADD('MINUTE', -12, CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 3 AND name = 'The Greenhouse'),  'The Greenhouse is FULL!',  'ACTIVE', DATEADD('MINUTE', -6,  CURRENT_TIMESTAMP)),
+((SELECT id FROM festival_area WHERE festival_id = 4 AND name = 'Woodland Stage'),  'Woodland Stage is FULL!',  'ACTIVE', DATEADD('MINUTE', -7,  CURRENT_TIMESTAMP));
