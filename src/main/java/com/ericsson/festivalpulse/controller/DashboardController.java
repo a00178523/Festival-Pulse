@@ -4,19 +4,17 @@ import com.ericsson.festivalpulse.model.DashboardSummary;
 import com.ericsson.festivalpulse.service.DashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/dashboard")
+@RequestMapping("/api/festivals/{festivalId}/dashboard")
 @RequiredArgsConstructor
 public class DashboardController {
 
     private final DashboardService dashboardService;
 
     @GetMapping
-    public ResponseEntity<DashboardSummary> getDashboard() {
-        return ResponseEntity.ok(dashboardService.getSummary());
+    public ResponseEntity<DashboardSummary> getDashboard(@PathVariable Long festivalId) {
+        return ResponseEntity.ok(dashboardService.getSummary(festivalId));
     }
 }

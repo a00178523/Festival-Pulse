@@ -14,21 +14,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/reports")
+@RequestMapping("/api/festivals/{festivalId}/reports")
 @RequiredArgsConstructor
 public class CrowdReportController {
 
     private final CrowdReportService crowdReportService;
 
     @PostMapping
-    public ResponseEntity<CrowdReport> submitReport(@Valid @RequestBody ReportRequest request) {
-        CrowdReport report = crowdReportService.submitReport(request.getAreaId(), request.getCrowdLevel(), request.getNote());
+    public ResponseEntity<CrowdReport> submitReport(@PathVariable Long festivalId, @Valid @RequestBody ReportRequest request) {
+        CrowdReport report = crowdReportService.submitReport(festivalId, request.getAreaId(), request.getCrowdLevel(), request.getNote());
         return ResponseEntity.status(HttpStatus.CREATED).body(report);
     }
 
     @GetMapping
-    public ResponseEntity<List<CrowdReport>> getRecentReports() {
-        return ResponseEntity.ok(crowdReportService.getRecentReports());
+    public ResponseEntity<List<CrowdReport>> getRecentReports(@PathVariable Long festivalId) {
+        return ResponseEntity.ok(crowdReportService.getRecentReports(festivalId));
     }
 
     @Data

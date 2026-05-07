@@ -1,6 +1,7 @@
 package com.ericsson.festivalpulse.repository;
 
 import com.ericsson.festivalpulse.model.CrowdReport;
+import com.ericsson.festivalpulse.model.Festival;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface CrowdReportRepository extends JpaRepository<CrowdReport, Long> {
-    List<CrowdReport> findTop20ByOrderBySubmittedAtDesc();
+    List<CrowdReport> findTop20ByAreaFestivalOrderBySubmittedAtDesc(Festival festival);
 }
