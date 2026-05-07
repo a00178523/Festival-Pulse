@@ -2,19 +2,14 @@ spring:
   application:
     name: Festival Pulse
   datasource:
-    url: jdbc:h2:mem:festivalpulse
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://localhost:3306/festivalpulse?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
-    defer-datasource-initialization: true
-  sql:
-    init:
-      mode: always
-  h2:
-    console:
-      enabled: true
 
 springdoc:
   api-docs:
