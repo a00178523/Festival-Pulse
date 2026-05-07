@@ -11,3 +11,7 @@ spring:
   h2:
     console:
       enabled: true
+
+springdoc:
+  api-docs:
+    version: openapi_3_0
